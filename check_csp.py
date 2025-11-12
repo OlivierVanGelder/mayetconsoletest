@@ -2,7 +2,7 @@ import json, os, sys, time, urllib.request
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-URL = sys.argv[1] if len(sys.argv) > 1 else "https://mayetmediators.nl"
+URL = sys.argv[1] if len(sys.argv) > 1 else "https://csper.io/docs/content-security-policy-examples" #https://mayetmediators.nl
 WEBHOOK = os.environ.get("N8N_WEBHOOK_URL")
 
 opts = Options()
