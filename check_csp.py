@@ -1,12 +1,11 @@
 import json, os, re, sys, time, urllib.request
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 URL = sys.argv[1] if len(sys.argv) > 1 else "https://mayetmediators.nl"
 WEBHOOK = os.environ.get("N8N_WEBHOOK_URL")
 
-# Regex voor CSP fouten
+# Regex voor CSP-fouten
 CSP_RE = [
     re.compile(r"Refused to load .* violates .* Content Security Policy", re.I),
     re.compile(r"violates the following Content Security Policy", re.I),
@@ -18,16 +17,16 @@ def is_csp(txt: str) -> bool:
 def is_noise(txt: str) -> bool:
     return "ERR_BLOCKED_BY_CLIENT" in txt
 
-# Chrome opties
 opts = Options()
 opts.add_argument("--headless=new")
 opts.add_argument("--no-sandbox")
 opts.add_argument("--disable-dev-shm-usage")
-# Console logs aan
-caps = DesiredCapabilities.CHROME.copy()
-caps["goog:loggingPrefs"] = {"browser": "ALL"}
+# Optioneel: eenvoudige mobielprofiel om je iPhone-situatie te benaderen
+# opts.add_experimental_option("mobileEmulation", {"deviceName": "iPhone X"})
+# Browserconsole logs aan in Selenium 4
+opts.set_capability("goog:loggingPrefs", {"browser": "ALL"})
 
-driver = webdriver.Chrome(options=opts, desired_capabilities=caps)
+driver = webdriver.Chrome(options=opts)
 
 nav_error = None
 logs = []
@@ -36,7 +35,6 @@ try:
     driver.get(URL)
     time.sleep(2.5)  # korte extra wacht voor late console output
     for entry in driver.get_log("browser"):
-        # entry heeft keys: level, message, timestamp
         logs.append({
             "type": entry.get("level", "LOG").lower(),
             "text": entry.get("message", ""),
