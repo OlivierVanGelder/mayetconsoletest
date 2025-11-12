@@ -26,4 +26,4 @@ jobs:
         env:
           N8N_WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL }}
         run: |
-          python check_csp.py https://mayetmediators.nl
+          python check_csp.py https://csper.io/docs/content-security-policy-examples
