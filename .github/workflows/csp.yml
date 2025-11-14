@@ -1,7 +1,5 @@
 name: CSP check via Selenium
 on:
-  schedule:
-    - cron: "*/30 * * * *"
   workflow_dispatch:
 
 jobs:
